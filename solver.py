@@ -92,7 +92,8 @@ for i in range(0, 6):
 
 # Unrestricted maximum likelihood, except for factor also present in
 # numerator
-LHu = np.prod(np.power(1/(1/nvec * np.sum((yarr - ybararr)**2, axis=1)), nvec/2))
+varUnrest = (1/nvec * np.sum((yarr - ybararr)**2, axis=1))
+LHu = np.prod(np.power(1/varUnrest, nvec/2))
 
 # Likelihood ratio
 lam = LH0/LHu
@@ -100,4 +101,10 @@ lam = LH0/LHu
 stat = -2*np.log(lam)
 # Associated p-value
 pval = 1-chi2.cdf(stat, m-1)
+
+# Print relevant outputs
+print("Null mean = ", muNull)
+print("Null variance = ", varNull)
+print("Unrestricted mean = ", ybarvec)
+print("Unrestricted variance = ", varUnrest)
 print("P-value = ", pval)
