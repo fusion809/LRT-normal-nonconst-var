@@ -1,0 +1,126 @@
+\documentclass[12pt,a4paper,openright]{article}
+\setcounter{secnumdepth}{0}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{sansmath}
+\usepackage{pst-eucl}
+\usepackage[UKenglish]{isodate}
+\usepackage[UKenglish]{babel}
+\usepackage{float}
+\usepackage[numbered,framed]{matlab-prettifier}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{sectsty}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=black,bookmarksopen=true]{hyperref}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\eqn}[1]{Equation \ref{#1}}
+\newcommand{\ovY}{\overline{Y}}
+\newcommand{\wmu}{\widehat{\mu}}
+\newcommand{\wst}{\widehat{\sigma^2}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\RR}{\mathrm{RR}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\MSE}{\mathrm{MSE}}
+\newcommand{\SST}{\mathrm{SST}}
+\newcommand{\MST}{\mathrm{MST}}
+\newcommand{\SSE}{\mathrm{SSE}}
+\newcommand{\SSS}{\mathrm{SS}}
+\newcommand{\SSTotal}{\mathrm{Total\hspace{0.1cm}SS}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\eff}{\mathrm{eff}}
+\newcommand{\CM}{\mathrm{CM}}
+\newcommand{\corr}{\mathrm{corr}}
+\newcommand{\Poisson}{\mathrm{Poisson}}
+\newcommand{\Binomial}{\mathrm{Binomial}}
+\setlength{\parindent}{0pt}
+\renewcommand{\baselinestretch}{2.0}
+\usepackage[margin=0.1in]{geometry}
+\title{Derivation of a test for equality of means with unequal variances}
+\author{Brenton Horne}
+
+\begin{document}
+	\maketitle
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\section{Hypotheses}
+	Let $Y_{ij}$ denote the $j$th observation of the $i$th treatment group. Where $i=1, 2, 3, ..., m$ and $j=1, 2, 3, ..., n_i$. Under the null hypothesis: $Y_{ij} \sim \mathrm{N}(\mu, \sigma_i^2)$. Under the alternative hypothesis: $Y_{ij} \sim \mathrm{N}(\mu_i, \sigma_i^2)$, where $\mu_i \neq \mu_k$ for at least one pair of $i$ and $k$ values.
+	
+	\section{Definitions}
+	\begin{align*}
+	n &= \sum_{i=1}^m n_i \\
+	\overline{Y} &= \dfrac{1}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} Y_{ij} \\
+	\overline{Y}_i &= \dfrac{1}{n_i} \sum_{j=1}^{n_i} Y_{ij} \\
+	\end{align*}
+
+	We will later use $\delta_{ik}$, which is the Kronecker delta symbol. It equals 0 if $i\neq k$ and 1 otherwise.
+	
+	\section{Derivation of the maximum likelihood under the null}
+	In this section we will use $L(H_0)$ to denote the likelihood under the null.
+	\begin{align}
+		L(H_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp\left(-\dfrac{1}{2\sigma^2_i}(Y_{ij}-\mu)^2\right) \nonumber\\
+		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \sigma_i^{-n_i}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma_i^2}\sum_{j=1}^{n_i}(Y_{ij}-\mu)^2 \right). \label{LH0}
+	\end{align}
+
+	Taking the natural logarithm yields:
+	
+	\begin{align*}
+		\ln{L(H_0)} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu)^2.
+	\end{align*}
+
+	Differentiating the log-likelihood with respect to $\mu$ and setting to zero to maximize the likelihood:
+	
+	\begin{align}
+		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm}\sigma^2_i = \widehat{\sigma^2_i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \nonumber\\
+		&= 0 \nonumber\\
+		\sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu) &= 0 \nonumber\\
+		\sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}} (n_i\ovY_i - n_i \wmu) &= 0 \nonumber\\
+		\left(\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}\right) - \left(\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}\right)\wmu &= 0 \nonumber \\
+		\wmu &= \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}}{\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}}. \label{wmuH0}
+	\end{align}
+
+	Differentiating the log-likelihood with respect to $\sigma^2_k$ and setting to zero to maximize the likelihood:
+	
+	\begin{align*}
+		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2_k} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm} \sigma^2_i = \widehat{\sigma^2_i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}\delta_{ik} - \dfrac{1}{2} \sum_{i=1}^m -\dfrac{1}{\widehat{\sigma^4_i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \\
+		&= -\dfrac{1}{2} \dfrac{n_k}{\widehat{\sigma^2_k}} + \dfrac{1}{2\widehat{\sigma^4_k}} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 \\
+		&= 0.
+	\end{align*}
+
+	Multiplying by $2\widehat{\sigma^4_i}$ yields:
+	
+	\begin{align}
+		-n_k\widehat{\sigma^2_k} + \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 &= 0 \nonumber\\
+		\widehat{\sigma^2_k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2. \label{wstH0}
+	\end{align}
+
+	So here we must numerically approximate $\wmu$ and $\widehat{\sigma^2_i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
+	
+	\begin{align*}
+		f(\wmu, \widehat{\sigma^2_k}) &= \wmu - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} \\
+		g_i(\wmu, \widehat{\sigma^2_k}) &= \widehat{\sigma^2_i} - \dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2.
+	\end{align*}
+
+	Therefore:
+	
+	\begin{align*}
+		\dfrac{\partial f}{\partial \wmu} &= 1\\
+		\dfrac{\partial f}{\partial \widehat{\sigma^2_i}} &= -\dfrac{\sum_{k=1}^m -\dfrac{n_k \ovY_k}{\widehat{\sigma^4_k}}\delta_{ik}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{-\left(\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}\right)^2} \sum_{k=1}^m -\dfrac{n_k}{\widehat{\sigma^4_k}}\delta_{ik} \\
+		&= \dfrac{\dfrac{n_i \ovY_i}{\widehat{\sigma^4_i}}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{\left(\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}\right)^2} \dfrac{n_i}{\widehat{\sigma^4_i}} \\
+		&= \dfrac{n_i}{\widehat{\sigma^4_i}\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} \left(\ovY_i - \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}}{\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}}\right).
+	\end{align*}
+
+	As for the derivatives of $g_i(\wmu, \widehat{\sigma^2_k})$:
+	
+	\begin{align*}
+		\dfrac{\partial g_i(\wmu, \widehat{\sigma^2_k})}{\partial \wmu} &= -\dfrac{1}{n_i} \sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \\
+		&= \dfrac{2}{n_i} (n_i\ovY_i - n_i\wmu) \\
+		&= 2(\ovY_i-\wmu) \\
+		\dfrac{\partial g_i(\wmu, \widehat{\sigma^2_k})}{\partial \widehat{\sigma^2_k}} &= \delta_{ik}.
+	\end{align*}
+\end{document}

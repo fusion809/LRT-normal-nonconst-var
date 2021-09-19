@@ -1,0 +1,5 @@
+\babel@toc {UKenglish}{}
+\babel@toc {UKenglish}{}
+\contentsline {section}{Hypotheses}{2}{section*.2}%
+\contentsline {section}{Definitions}{2}{section*.3}%
+\contentsline {section}{Derivation of the maximum likelihood under the null}{2}{section*.4}%

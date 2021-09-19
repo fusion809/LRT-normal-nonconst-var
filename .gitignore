@@ -1,0 +1,6 @@
+*.log
+*.out
+*.gz
+*.aux
+*.csv
+__pycache__
