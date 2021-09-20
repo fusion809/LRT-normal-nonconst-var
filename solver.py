@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
 import csv
-import scipy.stats as stats
 from scipy.stats import chi2
 
 # Function to return our two functions we're setting to 0
