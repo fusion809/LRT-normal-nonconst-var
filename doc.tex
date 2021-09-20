@@ -19,7 +19,8 @@
 \newcommand{\eqn}[1]{Equation \ref{#1}}
 \newcommand{\ovY}{\overline{Y}}
 \newcommand{\wmu}{\widehat{\mu}}
-\newcommand{\wst}[1]{\widehat{\sigma^2_#1}}
+\newcommand{\wst}[1]{\widehat{\sigma^2_{#1}}}
+\newcommand{\wstq}[1]{\widehat{\sigma^4_{#1}}}
 \newcommand{\B}{\mathbb{B}}
 \newcommand{\RR}{\mathrm{RR}}
 \newcommand{\var}{\mathrm{var}}
@@ -76,27 +77,27 @@
 	Differentiating the log-likelihood with respect to $\mu$ and setting to zero to maximize the likelihood:
 	
 	\begin{align}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm}\sigma^2_i = \widehat{\sigma^2_i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \nonumber\\
+		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm}\sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \nonumber\\
 		&= 0 \nonumber\\
-		\sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu) &= 0 \nonumber\\
-		\sum_{i=1}^m \dfrac{1}{\widehat{\sigma^2_i}} (n_i\ovY_i - n_i \wmu) &= 0 \nonumber\\
-		\left(\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}\right) - \left(\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}\right)\wmu &= 0 \nonumber \\
-		\wmu &= \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}}{\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}}. \label{wmuH0}
+		\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu) &= 0 \nonumber\\
+		\sum_{i=1}^m \dfrac{1}{\wst{i}} (n_i\ovY_i - n_i \wmu) &= 0 \nonumber\\
+		\left(\sum_{i=1}^m \dfrac{n_i \ovY_i}{\wst{i}}\right) - \left(\sum_{i=1}^m \dfrac{n_i}{\wst{i}}\right)\wmu &= 0 \nonumber \\
+		\wmu &= \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\wst{i}}}{\sum_{i=1}^m \dfrac{n_i}{\wst{i}}}. \label{wmuH0}
 	\end{align}
 
 	Differentiating the log-likelihood with respect to $\sigma^2_k$ and setting to zero to maximize the likelihood:
 	
 	\begin{align*}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2_k} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm} \sigma^2_i = \widehat{\sigma^2_i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}\delta_{ik} - \dfrac{1}{2} \sum_{i=1}^m -\dfrac{1}{\widehat{\sigma^4_i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \\
-		&= -\dfrac{1}{2} \dfrac{n_k}{\widehat{\sigma^2_k}} + \dfrac{1}{2\widehat{\sigma^4_k}} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 \\
+		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2_k} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm} \sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{n_i}{\wst{i}}\delta_{ik} - \dfrac{1}{2} \sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \\
+		&= -\dfrac{1}{2} \dfrac{n_k}{\wst{k}} + \dfrac{1}{2\wstq{k}} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 \\
 		&= 0.
 	\end{align*}
 
-	Multiplying by $2\widehat{\sigma^4_i}$ yields:
+	Multiplying by $2\wstq{i}$ yields:
 	
 	\begin{align}
-		-n_k\widehat{\sigma^2_k} + \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 &= 0 \nonumber\\
-		\widehat{\sigma^2_k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2. \label{wstH0}
+		-n_k\wst{k} + \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 &= 0 \nonumber\\
+		\wst{k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2. \label{wstH0}
 	\end{align}
 
 	Some simplification of our likelihood can be done now using our MLEs, although unfortunately Equations \ref{wmuH0} and \ref{wstH0} cannot be analytically solved, they must be numerically solved to yield values for $\wmu$ and $\wst{k}$.  
@@ -110,29 +111,29 @@
 	\end{align*}
 
 	\subsection{Numerical approximation of MLEs}
-	So here we must numerically approximate $\wmu$ and $\widehat{\sigma^2_i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
+	So here we must numerically approximate $\wmu$ and $\wst{i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
 	
 	\begin{align*}
-		f(\wmu, \widehat{\sigma^2_k}) &= \wmu - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} \\
-		g_i(\wmu, \widehat{\sigma^2_k}) &= \widehat{\sigma^2_i} - \dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2.
+		f(\wmu, \wst{k}) &= \wmu - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\wst{k}}}{\sum_{k=1}^m \dfrac{n_k}{\wst{k}}} \\
+		g_i(\wmu, \wst{k}) &= \wst{i} - \dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2.
 	\end{align*}
 
 	Therefore:
 	
 	\begin{align*}
 		\dfrac{\partial f}{\partial \wmu} &= 1\\
-		\dfrac{\partial f}{\partial \widehat{\sigma^2_i}} &= -\dfrac{\sum_{k=1}^m -\dfrac{n_k \ovY_k}{\widehat{\sigma^4_k}}\delta_{ik}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{-\left(\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}\right)^2} \sum_{k=1}^m -\dfrac{n_k}{\widehat{\sigma^4_k}}\delta_{ik} \\
-		&= \dfrac{\dfrac{n_i \ovY_i}{\widehat{\sigma^4_i}}}{\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\widehat{\sigma^2_k}}}{\left(\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}\right)^2} \dfrac{n_i}{\widehat{\sigma^4_i}} \\
-		&= \dfrac{n_i}{\widehat{\sigma^4_i}\sum_{k=1}^m \dfrac{n_k}{\widehat{\sigma^2_k}}} \left(\ovY_i - \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\widehat{\sigma^2_i}}}{\sum_{i=1}^m \dfrac{n_i}{\widehat{\sigma^2_i}}}\right).
+		\dfrac{\partial f}{\partial \wst{i}} &= -\dfrac{\sum_{k=1}^m -\dfrac{n_k \ovY_k}{\wstq{k}}\delta_{ik}}{\sum_{k=1}^m \dfrac{n_k}{\wst{k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\wst{k}}}{-\left(\sum_{k=1}^m \dfrac{n_k}{\wst{k}}\right)^2} \sum_{k=1}^m -\dfrac{n_k}{\wstq{k}}\delta_{ik} \\
+		&= \dfrac{\dfrac{n_i \ovY_i}{\wstq{i}}}{\sum_{k=1}^m \dfrac{n_k}{\wst{k}}} - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\wst{k}}}{\left(\sum_{k=1}^m \dfrac{n_k}{\wst{k}}\right)^2} \dfrac{n_i}{\wstq{i}} \\
+		&= \dfrac{n_i}{\wstq{i}\sum_{k=1}^m \dfrac{n_k}{\wst{k}}} \left(\ovY_i - \dfrac{\sum_{i=1}^m \dfrac{n_i \ovY_i}{\wst{i}}}{\sum_{i=1}^m \dfrac{n_i}{\wst{i}}}\right).
 	\end{align*}
 
-	As for the derivatives of $g_i(\wmu, \widehat{\sigma^2_k})$:
+	As for the derivatives of $g_i(\wmu, \wst{k})$:
 	
 	\begin{align*}
-		\dfrac{\partial g_i(\wmu, \widehat{\sigma^2_k})}{\partial \wmu} &= -\dfrac{1}{n_i} \sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \\
+		\dfrac{\partial g_i(\wmu, \wst{k})}{\partial \wmu} &= -\dfrac{1}{n_i} \sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \\
 		&= \dfrac{2}{n_i} (n_i\ovY_i - n_i\wmu) \\
 		&= 2(\ovY_i-\wmu) \\
-		\dfrac{\partial g_i(\wmu, \widehat{\sigma^2_k})}{\partial \widehat{\sigma^2_k}} &= \delta_{ik}.
+		\dfrac{\partial g_i(\wmu, \wst{k})}{\partial \wst{k}} &= \delta_{ik}.
 	\end{align*}
 
 	This thus gives us a Jacobian:
@@ -219,8 +220,8 @@
 	Setting the derivative with respect to $\sigma^2_k$ to zero to find the MLE for $\sigma^2_k$:
 	
 	\begin{align*}
-		\dfrac{\partial \ln{L_u}}{\partial \wst{k}}\Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{n_i}{\wst{i}} \delta_{ik} - \dfrac{1}{2}\sum_{i=1}^m -\dfrac{1}{\widehat{\sigma^4_i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \\
-		&= -\dfrac{n_k}{2\wst{k}} + \dfrac{1}{2\widehat{\sigma^4_k}}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
+		\dfrac{\partial \ln{L_u}}{\partial \wst{k}}\Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{n_i}{\wst{i}} \delta_{ik} - \dfrac{1}{2}\sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \\
+		&= -\dfrac{n_k}{2\wst{k}} + \dfrac{1}{2\wstq{k}}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
 		&= 0. \\
 		\implies \wst{k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
 		&= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\ovY_k)^2.
