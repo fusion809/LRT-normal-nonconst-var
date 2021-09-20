@@ -19,7 +19,7 @@
 \newcommand{\eqn}[1]{Equation \ref{#1}}
 \newcommand{\ovY}{\overline{Y}}
 \newcommand{\wmu}{\widehat{\mu}}
-\newcommand{\wst}{\widehat{\sigma^2}}
+\newcommand{\wst}[1]{\widehat{\sigma^2_#1}}
 \newcommand{\B}{\mathbb{B}}
 \newcommand{\RR}{\mathrm{RR}}
 \newcommand{\var}{\mathrm{var}}
@@ -99,6 +99,17 @@
 		\widehat{\sigma^2_k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2. \label{wstH0}
 	\end{align}
 
+	Some simplification of our likelihood can be done now using our MLEs, although unfortunately Equations \ref{wmuH0} and \ref{wstH0} cannot be analytically solved, they must be numerically solved to yield values for $\wmu$ and $\wst{k}$.  
+	
+	\begin{align*}
+		L(H_0) &= (2\pi)^{-n/2} \left(\prod_{i=1}^m \wst{i}^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
+		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
+		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m n_i \right) \\
+		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{n}{2}\right) \\
+		&= (2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right).
+	\end{align*}
+
+	\subsection{Numerical approximation of MLEs}
 	So here we must numerically approximate $\wmu$ and $\widehat{\sigma^2_i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
 	
 	\begin{align*}
@@ -123,4 +134,122 @@
 		&= 2(\ovY_i-\wmu) \\
 		\dfrac{\partial g_i(\wmu, \widehat{\sigma^2_k})}{\partial \widehat{\sigma^2_k}} &= \delta_{ik}.
 	\end{align*}
+
+	This thus gives us a Jacobian:
+	
+	\begin{align*}
+		J = \left[\begin{matrix}
+			\dfrac{\partial f}{\partial \wmu} & \dfrac{\partial f}{\partial \wst{1}} & \dfrac{\partial f}{\partial \wst{2}} & \dfrac{\partial f}{\partial \wst{3}} & \cdots & \dfrac{\partial f}{\partial \wst{m}} \\
+			\dfrac{\partial g_1}{\partial \wmu} & \dfrac{\partial g_1}{\partial \wst{1}} & \dfrac{\partial g_1}{\partial \wst{2}} & \dfrac{\partial g_1}{\partial \wst{3}} & \cdots & \dfrac{\partial g_1}{\partial \wst{m}} \\
+			\dfrac{\partial g_2}{\partial \wmu} & \dfrac{\partial g_2}{\partial \wst{1}} & \dfrac{\partial g_2}{\partial \wst{2}} & \dfrac{\partial g_2}{\partial \wst{3}} & \cdots & \dfrac{\partial g_2}{\partial \wst{m}} \\
+			\dfrac{\partial g_3}{\partial \wmu} & \dfrac{\partial g_3}{\partial \wst{1}} & \dfrac{\partial g_3}{\partial \wst{2}} & \dfrac{\partial g_3}{\partial \wst{3}} & \cdots & \dfrac{\partial g_3}{\partial \wst{m}} \\
+			\hdotsfor{6} \\
+			\dfrac{\partial g_m}{\partial \wmu} & \dfrac{\partial g_m}{\partial \wst{1}} & \dfrac{\partial g_m}{\partial \wst{2}} & \dfrac{\partial g_m}{\partial \wst{3}} & \cdots & \dfrac{\partial g_m}{\partial \wst{m}}
+		\end{matrix}\right].
+	\end{align*}
+
+	Interestingly, this Jacobian's main diagonal (left to right, top to bottom) consists entirely of 1s. The only off-diagonal elements that are non-zero are in the first row or first column. We also have this function vector:
+	
+	\begin{align*}
+		\mathbf{F} = \left[
+		\begin{matrix}
+			f(\wmu, \wst{k}) \\
+			g_1(\wmu, \wst{k}) \\
+			g_2(\wmu, \wst{k}) \\
+			g_3(\wmu, \wst{k}) \\
+			\hdotsfor{1} \\
+			g_m(\wmu, \wst{k})
+		\end{matrix}
+	\right].
+	\end{align*}
+
+	And we use the algorithm:
+	
+	\begin{align*}
+		\left[\begin{matrix}
+			\wmu \\
+			\wst{1} \\
+			\wst{2} \\
+			\wst{3} \\
+			\hdotsfor{1} \\
+			\wst{m}
+		\end{matrix}\right]_{\mathrm{New}} &= \left[\begin{matrix}
+		\wmu \\
+		\wst{1} \\
+		\wst{2} \\
+		\wst{3} \\
+		\hdotsfor{1} \\
+		\wst{m}
+	\end{matrix}\right]_{\mathrm{Old}} - J^{-1}\mathbf{F}.
+	\end{align*}
+
+	What should we use as our initial guess for $\left[\begin{matrix}
+		\wmu \\
+		\wst{1} \\
+		\wst{2} \\
+		\wst{3} \\
+		\hdotsfor{1} \\
+		\wst{m}
+	\end{matrix}\right]$? Well, how about the overall mean for $\wmu$ and the $k$th sample variance for $\wst{k}$. 
+
+	\section{Derivation of the unrestricted maximum likelihood}
+	We will use $L_u$ to denote the unrestricted likelihood function.
+	
+	\begin{align*}
+		L_u &= \prod_{i=1}^m \prod_{i=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp{\left(-\dfrac{1}{2\sigma^2_i} (Y_{ij}-\mu_i)^2\right)} \\
+		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \sigma_i^{-n_i}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2\right)}.
+	\end{align*}
+
+	Hence the unrestricted log-likelihood is:
+	
+	\begin{align*}
+		\ln{L_u} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2.
+	\end{align*}
+
+	Setting the derivative with respect to $\mu_l$ to zero to find the MLE for $\mu_l$:
+	
+	\begin{align*}
+		\dfrac{\partial \ln{L_u}}{\partial \mu_l} \Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu_i)\delta_{il} \\
+		&= \dfrac{1}{\wst{l}} \sum_{j=1}^{n_l} (Y_{lj}-\wmu_l) \\
+		&= \dfrac{1}{\wst{l}} (n_l \ovY_l  -n_l \wmu_l) \\
+		&= 0. \\
+		\implies \wmu_l &= \ovY_l.
+	\end{align*}
+
+	Setting the derivative with respect to $\sigma^2_k$ to zero to find the MLE for $\sigma^2_k$:
+	
+	\begin{align*}
+		\dfrac{\partial \ln{L_u}}{\partial \wst{k}}\Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{n_i}{\wst{i}} \delta_{ik} - \dfrac{1}{2}\sum_{i=1}^m -\dfrac{1}{\widehat{\sigma^4_i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \\
+		&= -\dfrac{n_k}{2\wst{k}} + \dfrac{1}{2\widehat{\sigma^4_k}}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
+		&= 0. \\
+		\implies \wst{k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
+		&= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\ovY_k)^2.
+	\end{align*}
+
+	Substituting these MLEs into our expression for $L_u$ to get the unrestricted maximum likelihood:
+	
+	\begin{align*}
+		L_u &= (2\pi)^{-n/2} \left(\prod_{i=1}^m (\wst{i})^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \\
+		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\dfrac{1}{n_i}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)} \\
+		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m n_i\right)} \\
+		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right) \exp\left(-\dfrac{n}{2}\right) \\
+		&= (2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right).
+	\end{align*}
+
+	\section{Likelihood ratio}
+	Hence our likelihood ratio is:
+	
+	\begin{align*}
+		\lambda &= \dfrac{(2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)}{(2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)} \\
+		&= \dfrac{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
+		&= \prod_{i=1}^m \left(\dfrac{\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}{\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2}\right)^{n_i/2}.
+	\end{align*}
+
+	And our test statistic is:
+	
+	\begin{align*}
+		-2\ln{\lambda} \sim \chi^2_{m-1}.
+	\end{align*}
+
+	As the unrestricted maximum likelihood has $m-1$ more parameters than the maximum likelihood under the null.
 \end{document}

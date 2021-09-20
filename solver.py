@@ -81,22 +81,16 @@ while (tol < diff and iteration < itMax):
     iteration += 1
 
 # Hypothesis testing
-# Likelihood under null, except for the factor that is also present 
-# in the denominator (2pi e)^(-n/2)
-LH0 = np.prod(np.power(1/(1/nvec * np.sum((yarr-muNull)**2, axis=1)), nvec/2))
-
 # Make an array of ybar values corresponding to each element of y
 ybararr = np.tile(1, np.shape(yarr))
 for i in range(0, 6):
     ybararr[i, :] = ybarvec[i] * np.ones((1, nvec[i]))
 
-# Unrestricted maximum likelihood, except for factor also present in
-# numerator
+# Unrestricted MLE of variance
 varUnrest = (1/nvec * np.sum((yarr - ybararr)**2, axis=1))
-LHu = np.prod(np.power(1/varUnrest, nvec/2))
 
 # Likelihood ratio
-lam = LH0/LHu
+lam = np.prod(np.power(varUnrest/varNull, nvec/2))
 # Test statistic -2ln(lam)
 stat = -2*np.log(lam)
 # Associated p-value
@@ -107,4 +101,5 @@ print("Null mean = ", muNull)
 print("Null variance = ", varNull)
 print("Unrestricted mean = ", ybarvec)
 print("Unrestricted variance = ", varUnrest)
+print("Test statistic = ", stat)
 print("P-value = ", pval)
