@@ -74,7 +74,7 @@ itMax = 1e3
 tol = 1e-8
 
 # Iterate until we get muNull and varNull to required
-# tolerance level
+# tolerance level or we run out of iterations
 while (tol < diff and iteration < itMax):
     muNull += eps[0]
     varNull += eps[1:m+1]
