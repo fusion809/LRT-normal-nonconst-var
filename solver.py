@@ -20,7 +20,7 @@ def funjac(mu, var, nvec, yarr, ybarvec):
     return F, J
 
 # Read the most important pieces of data from the CSV
-def readData():
+def readData(groupNo, depVarNo):
     ifile = open("ProjectData.csv")
     reader = csv.reader(ifile)
     y = np.array([])
@@ -28,15 +28,15 @@ def readData():
     count = 0
     for row in reader:
         if (count != 0):
-            group = np.append(group, int(row[0]))
-            y = np.append(y, float(row[5]))
+            group = np.append(group, int(row[groupNo]))
+            y = np.append(y, float(row[depVarNo]))
         count += 1
     ifile.close()
 
     return group, y
 
 # All approximated via sample estimators
-group, y = readData()
+group, y = readData(0, 5)
 m = int(np.max(group))
 n = np.size(y)
 nvec = np.tile(0, m)
