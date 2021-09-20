@@ -71,7 +71,8 @@ diff = np.sqrt(sum(eps**2)/(m+1))
 # Parameters of the loop
 iteration = 0
 itMax = 1e3
-tol = 1e-8
+tol = 1e-11
+param = np.tile(0.0, (m+1, 1))
 
 # Iterate until we get muNull and varNull to required
 # tolerance level or we run out of iterations
@@ -80,7 +81,10 @@ while (tol < diff and iteration < itMax):
     varNull += eps[1:m+1]
     F, J = funjac(muNull, varNull, nvec, yarr, ybarvec)
     eps = -np.linalg.solve(J, F)
-    diff = np.sqrt(sum(eps**2)/(m+1))
+    param[0] = muNull
+    param[1:m+1] = np.reshape(varNull, (m, 1))
+    epsRel = np.reshape(eps, (m+1, 1))/param
+    diff = np.sqrt(np.sum(epsRel**2)/(m+1))
     iteration += 1
 
 # Hypothesis testing
