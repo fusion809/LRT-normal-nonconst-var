@@ -38,16 +38,20 @@ def readData():
 
 # All approximated via sample estimators
 group, y = readData()
-nvec = np.array([5, 5, 5, 5, 5, 5])
-ybarvec = np.array([])
-yarr = np.tile(0.5, (int(max(group)), max(nvec)))
-m = np.size(nvec)
+m = int(np.max(group))
 n = np.size(y)
+nvec = np.tile(0, m)
+for i in range(0, m):
+    nvec[i] = int(np.size(y[group == i+1]))
+
+ni = int(np.max(nvec))
+ybarvec = np.array([])
+yarr = np.tile(0.5, (m, ni))
 
 # yarr rows correspond to different groups
 # columns different observations
-for i in range(0, 6):
-    for j in range (0, 5):
+for i in range(0, m):
+    for j in range (0, ni):
         yarr[i, j] = y[group == i + 1][j]
 
 # Ybar_i
