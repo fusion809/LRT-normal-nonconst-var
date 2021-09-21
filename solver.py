@@ -71,7 +71,7 @@ diff = np.sqrt(sum(eps**2)/(m+1))
 # Parameters of the loop
 iteration = 0
 itMax = 1e3
-tol = 1e-12
+tol = 1e-13
 param = np.tile(0.0, (m+1, 1))
 
 # Iterate until we get muNull and varNull to required
