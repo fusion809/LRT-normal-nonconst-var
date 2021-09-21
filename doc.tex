@@ -234,14 +234,14 @@
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\dfrac{1}{n_i}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)} \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m n_i\right)} \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right) \exp\left(-\dfrac{n}{2}\right) \\
-		&= (2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right).
+		&= (2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}.
 	\end{align*}
 
 	\section{Likelihood ratio}
 	Hence our likelihood ratio is:
 	
 	\begin{align*}
-		\lambda &= \dfrac{(2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)}{(2\pi e)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)} \\
+		\lambda &= \dfrac{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
 		&= \dfrac{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
 		&= \prod_{i=1}^m \left(\dfrac{\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}{\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2}\right)^{n_i/2}.
 	\end{align*}
