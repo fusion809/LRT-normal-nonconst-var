@@ -107,11 +107,13 @@ def main():
     # Print relevant outputs
     print("Null mean = ", muNull)
     for i in range(0, m):
+        print("-------------------------------------")
         print("For group = ", i +1)
         print("Null variance = ", varNull[i])
         print("Unrestricted mean = ", ybarvec[i])
         print("Unrestricted variance = ", varUnrest[i])
 
+    print("-------------------------------------")
     print("Test statistic = ", stat)
     print("P-value = ", pval)
 
