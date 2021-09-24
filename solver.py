@@ -6,27 +6,38 @@ from scipy.stats import chi2
 # Function to return our two functions we're setting to 0
 # Plus the Jacobian
 def funjac(mu, var, nvec, yarr, ybarvec):
+    # Function vector
     muHat = (np.sum(nvec*ybarvec/var))/(np.sum(nvec/var))
     f = mu - muHat
     g = var - 1/nvec * np.sum((yarr-mu)**2, axis=1)
     F = np.insert(g, 0, f)
+    
+    # Number of groups
     m = np.size(var)
+
+    # Build Jacobian
     J0 = nvec/(var**2*np.sum(nvec/var))*(ybarvec - muHat)
     J0 = np.insert(J0, 0, 1)
     # This creates the entries for partial gk/partial varj
     J = np.eye(m+1, m+1)
     J[0, :] = J0
     J[1:m+1, 0] = 2*(ybarvec-mu)
+    
     return F, J
 
 # Read the most important pieces of data from the CSV
-def readData(groupNo, depVarNo):
-    ifile = open("ProjectData.csv")
+def readData(fileName, groupNo, depVarNo):
+    """
+    Returns group variable and dependent variable in fileName that are in the
+    columns specified by groupNo and depVarNo. 
+    """
+    ifile = open(fileName)
     reader = csv.reader(ifile)
     y = np.array([])
     group = np.array([])
     count = 0
     for row in reader:
+        # Do not include headers
         if (count != 0):
             group = np.append(group, int(row[groupNo]))
             y = np.append(y, float(row[depVarNo]))
@@ -37,9 +48,8 @@ def readData(groupNo, depVarNo):
 
 def main():
     # All approximated via sample estimators
-    group, y = readData(0, 5)
+    group, y = readData("ProjectData.csv", 0, 5)
     m = int(np.max(group))
-    n = np.size(y)
     nvec = np.tile(0, m)
     for i in range(0, m):
         nvec[i] = int(np.size(y[group == i+1]))
