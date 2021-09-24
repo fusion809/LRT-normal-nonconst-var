@@ -105,17 +105,18 @@ def main():
     pval = 1-chi2.cdf(stat, m-1)
 
     # Print relevant outputs
-    print("Null mean = ", muNull)
+    print(f"Null mean             = {muNull:.3e}")
     for i in range(0, m):
+        groupNo = i + 1
         print("-------------------------------------")
-        print("For group = ", i +1)
-        print("Null variance = ", varNull[i])
-        print("Unrestricted mean = ", ybarvec[i])
-        print("Unrestricted variance = ", varUnrest[i])
+        print(f"For group             = {groupNo}")
+        print(f"Null variance         = {varNull[i]:.3e}")
+        print(f"Unrestricted mean     = {ybarvec[i]:.3e}")
+        print(f"Unrestricted variance = {varUnrest[i]:.3e}")
 
     print("-------------------------------------")
-    print("Test statistic = ", stat)
-    print("P-value = ", pval)
+    print(f"Test statistic        = {stat:.3f}")
+    print(f"P-value               = {pval:.3e}")
 
 if __name__ == "__main__":
     main()
