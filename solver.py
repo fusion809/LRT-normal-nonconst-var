@@ -16,11 +16,19 @@ def funjac(mu, var, nvec, yarr, ybarvec):
     m = np.size(var)
 
     # Build Jacobian
+    # Partial f/partial varj
     J0 = nvec/(var**2*np.sum(nvec/var))*(ybarvec - muHat)
+
+    # partial f/partial mu = 1
     J0 = np.insert(J0, 0, 1)
+
     # This creates the entries for partial gk/partial varj
     J = np.eye(m+1, m+1)
+
+    # Insert first row which is of f's partial derivatives
     J[0, :] = J0
+
+    # partial gk/partial mu
     J[1:m+1, 0] = 2*(ybarvec-mu)
     
     return F, J
