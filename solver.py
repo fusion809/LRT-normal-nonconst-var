@@ -6,6 +6,31 @@ from scipy.stats import chi2
 # Function to return our two functions we're setting to 0
 # Plus the Jacobian
 def funjac(mu, var, nvec, yarr, ybarvec):
+    """
+    Function that returns a vector of f and g functions evaluated at the
+    specified variable values plus the Jacobian matrix.
+
+    Parameters
+    ----------
+    mu : float.
+         Mean of our response variable for our current iteration of Newton's.
+    var : NumPy array of floats.
+         Variance of our response variable for our current iteration of 
+         Newton's.
+    nvec: NumPy array of integers.
+         The sample sizes of each group.
+    yarr: NumPy array of floats.
+         The response variable. Should be m (number of groups) x max(nvec) in size.
+    ybarvec : NumPy array of floats.
+         Means of each treatment group. Should be of size m x 1.
+
+    Returns
+    -------
+    F : NumPy array of floats.
+        Contains f and g values.
+    J : NumPy array of floats.
+        Contains the Jacobian.
+    """
     # Function vector
     muHat = (np.sum(nvec*ybarvec/var))/(np.sum(nvec/var))
     f = mu - muHat
@@ -38,6 +63,24 @@ def readData(fileName, groupNo, depVarNo):
     """
     Returns group variable and dependent variable in fileName that are in the
     columns specified by groupNo and depVarNo. 
+
+    Parameters
+    ----------
+    fileName : string.
+               The CSV file we're reading data from.
+    groupNo  : int.
+               An integer indicating the column in fileName in which our 
+               grouping variable is.
+    depVarNo : int.
+               An integer indicating the column in fileName in which our
+               dependent variable is.
+
+    Returns
+    -------
+    group : NumPy array of integers.
+            Contains the grouping variable for each observation.
+    y     : NumPy array of floats.
+            Contains the dependent variable value for each observation.
     """
     ifile = open(fileName)
     reader = csv.reader(ifile)
