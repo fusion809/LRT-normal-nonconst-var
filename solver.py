@@ -12,24 +12,25 @@ def funjac(mu, var, nvec, yarr, ybarvec):
 
     Parameters
     ----------
-    mu : float.
-         Mean of our response variable for our current iteration of Newton's.
-    var : NumPy array of floats.
-         Variance of our response variable for our current iteration of 
-         Newton's.
-    nvec: NumPy array of integers.
-         The sample sizes of each group.
-    yarr: NumPy array of floats.
-         The response variable. Should be m (number of groups) x max(nvec) in size.
+    mu      : float.
+              Mean of our response variable for our current iteration of Newton's.
+    var     : NumPy array of floats.
+              Variance of our response variable for our current iteration of 
+              Newton's.
+    nvec    : NumPy array of integers.
+              The sample sizes of each group.
+    yarr    : NumPy array of floats.
+              The response variable. Should be m (number of groups) x max(nvec)
+              in size.
     ybarvec : NumPy array of floats.
-         Means of each treatment group. Should be of size m x 1.
+              Means of each treatment group. Should be of size m x 1.
 
     Returns
     -------
-    F : NumPy array of floats.
-        Contains f and g values.
-    J : NumPy array of floats.
-        Contains the Jacobian.
+    F       : NumPy array of floats.
+              Contains f and g values.
+    J       : NumPy array of floats.
+              Contains the Jacobian.
     """
     # Function vector
     muHat = (np.sum(nvec*ybarvec/var))/(np.sum(nvec/var))
@@ -77,10 +78,10 @@ def readData(fileName, groupNo, depVarNo):
 
     Returns
     -------
-    group : NumPy array of integers.
-            Contains the grouping variable for each observation.
-    y     : NumPy array of floats.
-            Contains the dependent variable value for each observation.
+    group    : NumPy array of integers.
+               Contains the grouping variable for each observation.
+    y        : NumPy array of floats.
+               Contains the dependent variable value for each observation.
     """
     ifile = open(fileName)
     reader = csv.reader(ifile)
@@ -102,22 +103,23 @@ def printVars(muNull, varNull, ybarvec, varUnrest, stat, pval, m, decPlaces):
     Print variables of interest.
 
     muNull    : float.
-             MLE of the mean under the null.
+                MLE of the mean under the null.
     varNull   : NumPy array of floats.
-             MLE of the variance under the null.
+                MLE of the variance under the null.
     ybarvec   : NumPy array of floats.
-             Mean of each sample.
+                Mean of each sample.
     varUnrest : NumPy array of floats.
-             MLE of the variance of each sample.
+                MLE of the variance of each sample.
     stat      : float.
-             Test statistic (-2 ln(lambda)).
+                Test statistic (-2 ln(lambda)).
     pval      : float.
-             P-value for our likelihood-ratio test.
+                P-value for our likelihood-ratio test.
     m         : int.
-             Number of groups.
+                Number of groups.
     decPlaces : int.
-             Number of decimal places to be displayed.
+                Number of decimal places to be displayed.
     """
+
     print(f"Null mean             = {muNull:.{decPlaces}e}")
     for i in range(0, m):
         groupNo = i + 1
@@ -138,27 +140,27 @@ def getVars(group, y):
     Parameters
     ----------
     group   : NumPy array of ints.
-            Group variable corresponding to each observation.
+              Group variable corresponding to each observation.
     y       : NumPy array of floats.
-            Dependent variable value corresponding to each observation.
+              Dependent variable value corresponding to each observation.
 
     Returns
     -------
     m       : int.
-            Number of groups.
+              Number of groups.
     muNull  : NumPy array of floats.
-            Initial estimate of our MLE for the mean under the null.
+              Initial estimate of our MLE for the mean under the null.
     varNull : NumPy array of floats.
-            Initial estimate of our MLE for the variance under the null.
+              Initial estimate of our MLE for the variance under the null.
     nvec    : NumPy array of ints.
-            Vector of sample sizes for each value of the grouping variable.
+              Vector of sample sizes for each value of the grouping variable.
     yarr    : NumPy array of floats.
-            Array of values of the dependent variable for each observation with
-            each row corresponding to a different value of the grouping
-            variable.
+              Array of values of the dependent variable for each observation 
+              with each row corresponding to a different value of the grouping
+              variable.
     ybarvec : NumPy array of floats.
-            Means of the dependent variable for each value of the grouping 
-            variable.
+              Means of the dependent variable for each value of the grouping 
+              variable.
     """
     m = int(np.max(group))
     nvec = np.tile(0, m)
