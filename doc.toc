@@ -5,4 +5,4 @@
 \contentsline {section}{Derivation of the maximum likelihood under the null}{2}{section*.4}%
 \contentsline {subsection}{Numerical approximation of maximum likelihood estimators}{4}{section*.5}%
 \contentsline {section}{Derivation of the unrestricted maximum likelihood}{7}{section*.6}%
-\contentsline {section}{Likelihood ratio}{9}{section*.7}%
+\contentsline {section}{Likelihood ratio}{8}{section*.7}%
