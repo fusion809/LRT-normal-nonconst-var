@@ -97,9 +97,69 @@ def readData(fileName, groupNo, depVarNo):
 
     return group, y
 
-def main():
-    # All approximated via sample estimators
-    group, y = readData("ProjectData.csv", 0, 5)
+def printVars(muNull, varNull, ybarvec, varUnrest, stat, pval, m, decPlaces):
+    """
+    Print variables of interest.
+
+    muNull    : float.
+             MLE of the mean under the null.
+    varNull   : NumPy array of floats.
+             MLE of the variance under the null.
+    ybarvec   : NumPy array of floats.
+             Mean of each sample.
+    varUnrest : NumPy array of floats.
+             MLE of the variance of each sample.
+    stat      : float.
+             Test statistic (-2 ln(lambda)).
+    pval      : float.
+             P-value for our likelihood-ratio test.
+    m         : int.
+             Number of groups.
+    decPlaces : int.
+             Number of decimal places to be displayed.
+    """
+    print(f"Null mean             = {muNull:.{decPlaces}e}")
+    for i in range(0, m):
+        groupNo = i + 1
+        print("-------------------------------------")
+        print(f"For group             = {groupNo}")
+        print(f"Null variance         = {varNull[i]:.{decPlaces}e}")
+        print(f"Unrestricted mean     = {ybarvec[i]:.{decPlaces}e}")
+        print(f"Unrestricted variance = {varUnrest[i]:.{decPlaces}e}")
+
+    print("-------------------------------------")
+    print(f"Test statistic        = {stat:.{decPlaces}f}")
+    print(f"P-value               = {pval:.{decPlaces}e}")
+
+def getVars(group, y):
+    """
+    Calculate various variables we need from group and y.
+
+    Parameters
+    ----------
+    group   : NumPy array of ints.
+            Group variable corresponding to each observation.
+    y       : NumPy array of floats.
+            Dependent variable value corresponding to each observation.
+
+    Returns
+    -------
+    m       : int.
+            Number of groups.
+    muNull  : NumPy array of floats.
+            Initial estimate of our MLE for the mean under the null.
+    varNull : NumPy array of floats.
+            Initial estimate of our MLE for the variance under the null.
+    nvec    : NumPy array of ints.
+            Vector of sample sizes for each value of the grouping variable.
+    yarr    : NumPy array of floats.
+            Array of values of the dependent variable for each observation with
+            each row corresponding to a different value of the grouping
+            variable.
+    ybarvec : NumPy array of floats.
+            Means of the dependent variable for each value of the grouping 
+            variable.
+    """
     m = int(np.max(group))
     nvec = np.tile(0, m)
     for i in range(0, m):
@@ -112,19 +172,48 @@ def main():
     # yarr rows correspond to different groups
     # columns different observations
     for i in range(0, m):
-        for j in range (0, ni):
+        for j in range (0, nvec[i]):
             yarr[i, j] = y[group == i + 1][j]
 
     # Ybar_i
     ybarvec = np.mean(yarr, axis=1)
     # Initial guess of mu under the null
-    muNullInit = np.mean(y)
+    muNull = np.mean(y)
     # Initial guess of var under the null
-    varNullInit = np.var(yarr, axis=1)
-    # Initialize variables for our loop below
-    muNull = muNullInit
-    varNull = varNullInit
+    varNull = np.var(yarr, axis=1)
 
+    return m, muNull, varNull, nvec, yarr, ybarvec
+
+def newtons(m, muNull, varNull, nvec, yarr, ybarvec):
+    """
+    Apply Newton's method to estimate the MLEs of the mean and variance under 
+    the null hypothesis.
+
+    Parameters
+    ----------
+    m       : int.
+              Number of groups.
+    muNull  : float.
+              Initial guess of the MLE of the mean under the null.
+    varNull : NumPy array of floats.
+              Initial guess of the MLE of the variance under the null.
+    nvec    : NumPy array of ints.
+              Sample sizes for each value of our grouping variable.
+    yarr    : NumPy array of floats.
+              Dependent variable with each row corresponding to different
+              values of the grouping variable and the columns corresponding
+              to different observations.
+    ybarvec : NumPy array of floats.
+              Mean of the dependent variable for each value of the grouping
+              variable.
+
+    Returns
+    -------
+    muNull  : float.
+              MLE of the mean under the null.
+    varNull : NumPy array of floats.
+              MLE of the variance under the null.
+    """
     # Get variables for the first iteration
     F, J = funjac(muNull, varNull, nvec, yarr, ybarvec)
     eps = -np.linalg.solve(J, F)
@@ -149,6 +238,16 @@ def main():
         diff = np.sqrt(np.sum(epsRel**2)/(m+1))
         iteration += 1
 
+    return muNull, varNull
+
+def main():
+    # All approximated via sample estimators
+    group, y = readData("ProjectData.csv", 0, 5)
+    m, muNull, varNull, nvec, yarr, ybarvec = getVars(group, y)
+
+    # Use Newton's method to estimate mu and var under the null
+    muNull, varNull = newtons(m, muNull, varNull, nvec, yarr, ybarvec)
+
     # Hypothesis testing
     # Make an array of ybar values corresponding to each element of y
     ybararr = np.tile(1, np.shape(yarr))
@@ -166,18 +265,7 @@ def main():
     pval = 1-chi2.cdf(stat, m-1)
 
     # Print relevant outputs
-    print(f"Null mean             = {muNull:.3e}")
-    for i in range(0, m):
-        groupNo = i + 1
-        print("-------------------------------------")
-        print(f"For group             = {groupNo}")
-        print(f"Null variance         = {varNull[i]:.3e}")
-        print(f"Unrestricted mean     = {ybarvec[i]:.3e}")
-        print(f"Unrestricted variance = {varUnrest[i]:.3e}")
-
-    print("-------------------------------------")
-    print(f"Test statistic        = {stat:.3f}")
-    print(f"P-value               = {pval:.3e}")
+    printVars(muNull, varNull, ybarvec, varUnrest, stat, pval, m, 3)
 
 if __name__ == "__main__":
     main()
