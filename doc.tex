@@ -100,7 +100,7 @@
 		\wst{k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2. \label{wstH0}
 	\end{align}
 
-	Some simplification of our likelihood can be done now using our MLEs, although unfortunately Equations \ref{wmuH0} and \ref{wstH0} cannot be analytically solved, they must be numerically solved to yield values for $\wmu$ and $\wst{k}$.  
+	Some simplification of our likelihood can be done now using our maximum likelihood estimators (MLEs), although unfortunately Equations \ref{wmuH0} and \ref{wstH0} cannot be analytically solved, they must be numerically solved to yield values for $\wmu$ and $\wst{k}$.  
 	
 	\begin{align*}
 		L(H_0) &= (2\pi)^{-n/2} \left(\prod_{i=1}^m \wst{i}^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
@@ -110,7 +110,7 @@
 		&= (2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}.
 	\end{align*}
 
-	\subsection{Numerical approximation of MLEs}
+	\subsection{Numerical approximation of maximum likelihood estimators}
 	So here we must numerically approximate $\wmu$ and $\wst{i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
 	
 	\begin{align*}
