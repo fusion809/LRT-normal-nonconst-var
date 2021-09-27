@@ -62,7 +62,8 @@
 	We will later use $\delta_{ik}$, which is the Kronecker delta symbol. It equals 0 if $i\neq k$ and 1 otherwise.
 	
 	\section{Derivation of the maximum likelihood under the null}
-	In this section we will use $L(H_0)$ to denote the likelihood under the null.
+	Let $\Omega_0$ denote the parameter space under the null hypothesis. $\Omega_0 = \left\{(\mu, \sigma^2_i): \hspace{0.1cm}-\infty < \mu < \infty, \hspace{0.1cm}\sigma^2_i > 0\right\}$. \\
+	$\Omega_a = \left\{(\mu_i, \sigma^2_i): \hspace{0.1cm}\mu_i \neq \mu_j\hspace{0.1cm}\mathrm{for\hspace{0.1cm}at\hspace{0.1cm}least\hspace{0.1cm}one\hspace{0.1cm}pair\hspace{0.1cm}of\hspace{0.1cm}}i\mathrm{\hspace{0.1cm}and\hspace{0.1cm}}j\mathrm{\hspace{0.1cm}values}, \hspace{0.1cm}-\infty < \mu_i < \infty, \hspace{0.1cm}\sigma^2_i > 0\right\}$. The unrestricted parameter space is thus: $\Omega = \Omega_0 \cup \Omega_a$. 
 	\begin{align}
 		L(H_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp\left(-\dfrac{1}{2\sigma^2_i}(Y_{ij}-\mu)^2\right) \nonumber\\
 		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \sigma_i^{-n_i}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma_i^2}\sum_{j=1}^{n_i}(Y_{ij}-\mu)^2 \right). \label{LH0}
