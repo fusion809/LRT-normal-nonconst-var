@@ -65,18 +65,18 @@
 	Let $\Omega_0$ denote the parameter space under the null hypothesis. $\Omega_0 = \left\{(\mu, \sigma^2_i): \hspace{0.1cm}-\infty < \mu < \infty, \hspace{0.1cm}\sigma^2_i > 0\right\}$. \\
 	$\Omega_a = \left\{(\mu_i, \sigma^2_i): \hspace{0.1cm}\mu_i \neq \mu_j\hspace{0.1cm}\mathrm{for\hspace{0.1cm}at\hspace{0.1cm}least\hspace{0.1cm}one\hspace{0.1cm}pair\hspace{0.1cm}of\hspace{0.1cm}}i\mathrm{\hspace{0.1cm}and\hspace{0.1cm}}j\mathrm{\hspace{0.1cm}values}, \hspace{0.1cm}-\infty < \mu_i < \infty, \hspace{0.1cm}\sigma^2_i > 0\right\}$. The unrestricted parameter space is thus: $\Omega = \Omega_0 \cup \Omega_a$. 
 	\begin{align}
-		L(H_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp\left(-\dfrac{1}{2\sigma^2_i}(Y_{ij}-\mu)^2\right) \nonumber\\
+		L(\Omega_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp\left(-\dfrac{1}{2\sigma^2_i}(Y_{ij}-\mu)^2\right) \nonumber\\
 		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \sigma_i^{-n_i}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma_i^2}\sum_{j=1}^{n_i}(Y_{ij}-\mu)^2 \right). \label{LH0}
 	\end{align}
 
 	Taking the natural logarithm yields:
 	\begin{align*}
-		\ln{L(H_0)} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu)^2.
+		\ln{L(\Omega_0)} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu)^2.
 	\end{align*}
 
 	Differentiating the log-likelihood with respect to $\mu$ and setting to zero to maximize the likelihood:
 	\begin{align}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm}\sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \nonumber\\
+		\dfrac{\partial \ln{L(\Omega_0)}}{\partial \mu} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm}\sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu) \nonumber\\
 		&= 0 \nonumber\\
 		\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu) &= 0 \nonumber\\
 		\sum_{i=1}^m \dfrac{1}{\wst{i}} (n_i\ovY_i - n_i \wmu) &= 0 \nonumber\\
@@ -86,7 +86,7 @@
 
 	Differentiating the log-likelihood with respect to $\sigma^2_k$ and setting to zero to maximize the likelihood:
 	\begin{align*}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2_k} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm} \sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{n_i}{\wst{i}}\delta_{ik} - \dfrac{1}{2} \sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \\
+		\dfrac{\partial \ln{L(\Omega_0)}}{\partial \sigma^2_k} \Bigm\lvert_{\mu = \wmu, \hspace{0.1cm} \sigma^2_i = \wst{i}} &= -\dfrac{1}{2} \sum_{i=1}^m \dfrac{n_i}{\wst{i}}\delta_{ik} - \dfrac{1}{2} \sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \\
 		&= -\dfrac{1}{2} \dfrac{n_k}{\wst{k}} + \dfrac{1}{2\wstq{k}} \sum_{j=1}^{n_k} (Y_{kj}-\wmu)^2 \\
 		&= 0.
 	\end{align*}
@@ -99,7 +99,7 @@
 
 	Some simplification of our likelihood can be done now using our maximum likelihood estimators (MLEs), although unfortunately Equations \ref{wmuH0} and \ref{wstH0} cannot be analytically solved, they must be numerically solved to yield values for $\wmu$ and $\wst{k}$.  
 	\begin{align*}
-		L(H_0) &= (2\pi)^{-n/2} \left(\prod_{i=1}^m \wst{i}^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
+		L(\widehat{\Omega_0}) &= (2\pi)^{-n/2} \left(\prod_{i=1}^m \wst{i}^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
 		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m \dfrac{1}{\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2}\sum_{j=1}^{n_i}(Y_{ij}-\wmu)^2 \right) \\
 		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{1}{2} \sum_{i=1}^m n_i \right) \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}\right)\exp\left(-\dfrac{n}{2}\right) \\
@@ -107,7 +107,7 @@
 	\end{align*}
 
 	\subsection{Numerical approximation of maximum likelihood estimators}
-	So here we must numerically approximate $\wmu$ and $\wst{i}$ using a technique like Newton's method and substitute this into our expression for $L(H_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
+	So here we must numerically approximate $\wmu$ and $\wst{i}$ using a technique like Newton's method and substitute this into our expression for $L(\Omega_0)$ to get the maximum likelihood under the null. If we use Newton's method, we must have functions we are finding the zeros of. Let:
 	\begin{align*}
 		f(\wmu, \wst{k}) &= \wmu - \dfrac{\sum_{k=1}^m \dfrac{n_k \ovY_k}{\wst{k}}}{\sum_{k=1}^m \dfrac{n_k}{\wst{k}}} \\
 		g_i(\wmu, \wst{k}) &= \wst{i} - \dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2.
@@ -184,20 +184,20 @@
 	\end{matrix}\right]$? Well, how about the overall mean for $\wmu$ and the $k$th sample variance for $\wst{k}$?
 
 	\section{Derivation of the unrestricted maximum likelihood}
-	We will use $L_u$ to denote the unrestricted likelihood function.
+	We will use $L(\Omega)$ to denote the unrestricted likelihood function.
 	\begin{align*}
-		L_u &= \prod_{i=1}^m \prod_{i=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp{\left(-\dfrac{1}{2\sigma^2_i} (Y_{ij}-\mu_i)^2\right)} \\
+		L(\Omega) &= \prod_{i=1}^m \prod_{i=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2_i}} \exp{\left(-\dfrac{1}{2\sigma^2_i} (Y_{ij}-\mu_i)^2\right)} \\
 		&= (2\pi)^{-n/2} \left(\prod_{i=1}^m \sigma_i^{-n_i}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2\right)}.
 	\end{align*}
 
 	Hence the unrestricted log-likelihood is:
 	\begin{align*}
-		\ln{L_u} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2.
+		\ln{L(\Omega)} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{1}{2}\sum_{i=1}^m n_i \ln{\sigma^2_i} - \dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\sigma^2_i}\sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2.
 	\end{align*}
 
 	Setting the derivative with respect to $\mu_l$ to zero to find the MLE for $\mu_l$:
 	\begin{align*}
-		\dfrac{\partial \ln{L_u}}{\partial \mu_l} \Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu_i)\delta_{il} \\
+		\dfrac{\partial \ln{L(\Omega)}}{\partial \mu_l} \Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} 2(-1)(Y_{ij}-\wmu_i)\delta_{il} \\
 		&= \dfrac{1}{\wst{l}} \sum_{j=1}^{n_l} (Y_{lj}-\wmu_l) \\
 		&= \dfrac{1}{\wst{l}} (n_l \ovY_l  -n_l \wmu_l) \\
 		&= 0. \\
@@ -206,16 +206,16 @@
 
 	Setting the derivative with respect to $\sigma^2_k$ to zero to find the MLE for $\sigma^2_k$:
 	\begin{align*}
-		\dfrac{\partial \ln{L_u}}{\partial \wst{k}}\Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{n_i}{\wst{i}} \delta_{ik} - \dfrac{1}{2}\sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \\
+		\dfrac{\partial \ln{L(\Omega)}}{\partial \wst{k}}\Bigm\lvert_{\mu_l=\wmu_l, \hspace{0.1cm}\sigma^2_k = \wst{k}} &= -\dfrac{1}{2}\sum_{i=1}^m \dfrac{n_i}{\wst{i}} \delta_{ik} - \dfrac{1}{2}\sum_{i=1}^m -\dfrac{1}{\wstq{i}} \delta_{ik}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \\
 		&= -\dfrac{n_k}{2\wst{k}} + \dfrac{1}{2\wstq{k}}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
 		&= 0. \\
 		\implies \wst{k} &= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\wmu_k)^2 \\
 		&= \dfrac{1}{n_k} \sum_{j=1}^{n_k} (Y_{kj}-\ovY_k)^2.
 	\end{align*}
 
-	Substituting these MLEs into our expression for $L_u$ to get the unrestricted maximum likelihood:
+	Substituting these MLEs into our expression for $L(\Omega)$ to get the unrestricted maximum likelihood:
 	\begin{align*}
-		L_u &= (2\pi)^{-n/2} \left(\prod_{i=1}^m (\wst{i})^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \\
+		L(\widehat{\Omega}) &= (2\pi)^{-n/2} \left(\prod_{i=1}^m (\wst{i})^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\wst{i}}\sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m \dfrac{1}{\dfrac{1}{n_i}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)} \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right)\exp{\left(-\dfrac{1}{2}\sum_{i=1}^m n_i\right)} \\
 		&= (2\pi)^{-n/2}\left(\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}\right) \exp\left(-\dfrac{n}{2}\right) \\
@@ -225,7 +225,8 @@
 	\section{Likelihood ratio}
 	Hence our likelihood ratio is:
 	\begin{align*}
-		\lambda &= \dfrac{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
+		\lambda &= \dfrac{L(\widehat{\Omega_0})}{L(\widehat{\Omega})} \\
+		&= \dfrac{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{(2\pi e)^{-n/2}\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
 		&= \dfrac{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)^{-n_i/2}}{\prod_{i=1}^m \left(\dfrac{1}{n_i} \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n_i/2}} \\
 		&= \prod_{i=1}^m \left(\dfrac{\sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}{\sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2}\right)^{n_i/2}.
 	\end{align*}
