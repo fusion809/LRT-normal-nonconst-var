@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Written in September 2021 by Brenton Horne
 import numpy as np
 import csv
 from scipy.stats import chi2
