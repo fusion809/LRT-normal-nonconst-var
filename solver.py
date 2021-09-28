@@ -97,6 +97,11 @@ def readData(fileName, groupNo, depVarNo):
 
     # Loop through the rows in input file
     for row in reader:
+        if ((depVarNo >= np.size(row)) or (groupNo >= np.size(row))):
+            print("At least one of the specified column numbers depVarNo or")
+            print("groupNo are greater than or equal to the number of columns")
+            print("in specified file.")
+            exit()
         # Do not include headers
         if (count != 0):
             group = np.append(group, int(row[groupNo]))
@@ -271,7 +276,7 @@ def newtons(m, muNull, varNull, nvec, yarr, ybarvec):
 
 def main():
     # All approximated via sample estimators
-    group, y = readData("ProjectDataOutlierRm.csv", 0, 4)
+    group, y = readData("ProjectData.csv", 0, 5)
     m, ni, muNull, varNull, nvec, yarr, ybarvec = getVars(group, y)
 
     # Use Newton's method to estimate mu and var under the null
