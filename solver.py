@@ -83,17 +83,25 @@ def readData(fileName, groupNo, depVarNo):
     y        : NumPy array of floats.
                Contains the dependent variable value for each observation.
     """
+    # Initialize variables for reading from file
     ifile = open(fileName)
     reader = csv.reader(ifile)
+
+    # Initialize arrays to store variable data
     y = np.array([])
     group = np.array([])
+
+    # Initialize count for loop below
     count = 0
+
+    # Loop through the rows in input file
     for row in reader:
         # Do not include headers
         if (count != 0):
             group = np.append(group, int(row[groupNo]))
             y = np.append(y, float(row[depVarNo]))
         count += 1
+
     ifile.close()
 
     return group, y
@@ -162,13 +170,18 @@ def getVars(group, y):
               Means of the dependent variable for each value of the grouping 
               variable.
     """
+    # Number of groups
     m = int(np.max(group))
+
+    # Vector of sample sizes
     nvec = np.tile(0, m)
     for i in range(0, m):
         nvec[i] = int(np.size(y[group == i+1]))
 
+    # Maximum sample size
     ni = int(np.max(nvec))
-    ybarvec = np.array([])
+
+    # Initialize 2D array for storing y values categorized by treatment group
     yarr = np.tile(0.5, (m, ni))
 
     # yarr rows correspond to different groups
@@ -179,8 +192,10 @@ def getVars(group, y):
 
     # Ybar_i
     ybarvec = np.mean(yarr, axis=1)
+
     # Initial guess of mu under the null
     muNull = np.mean(y)
+    
     # Initial guess of var under the null
     varNull = np.var(yarr, axis=1)
 
