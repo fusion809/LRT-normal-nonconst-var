@@ -200,7 +200,7 @@ def getVars(group, y):
     # Initial guess of var under the null
     varNull = np.var(yarr, axis=1)
 
-    return m, muNull, varNull, nvec, yarr, ybarvec
+    return m, ni, muNull, varNull, nvec, yarr, ybarvec
 
 def newtons(m, muNull, varNull, nvec, yarr, ybarvec):
     """
@@ -271,8 +271,8 @@ def newtons(m, muNull, varNull, nvec, yarr, ybarvec):
 
 def main():
     # All approximated via sample estimators
-    group, y = readData("ProjectData.csv", 0, 5)
-    m, muNull, varNull, nvec, yarr, ybarvec = getVars(group, y)
+    group, y = readData("ProjectDataOutlierRm.csv", 0, 4)
+    m, ni, muNull, varNull, nvec, yarr, ybarvec = getVars(group, y)
 
     # Use Newton's method to estimate mu and var under the null
     muNull, varNull = newtons(m, muNull, varNull, nvec, yarr, ybarvec)
@@ -281,7 +281,7 @@ def main():
     # Make an array of ybar values corresponding to each element of y
     ybararr = np.tile(1, np.shape(yarr))
     for i in range(0, m):
-        ybararr[i, :] = ybarvec[i] * np.ones((1, nvec[i]))
+        ybararr[i, :] = ybarvec[i] * np.ones((1, ni))
 
     # Unrestricted MLE of variance
     varUnrest = (1/nvec * np.sum((yarr - ybararr)**2, axis=1))

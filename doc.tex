@@ -131,7 +131,7 @@
 
 	This thus gives us a Jacobian:
 	\begin{align*}
-		J = \left[\begin{matrix}
+		\mathrm{J} = \left[\begin{matrix}
 			\dfrac{\partial f}{\partial \wmu} & \dfrac{\partial f}{\partial \wst{1}} & \dfrac{\partial f}{\partial \wst{2}} & \dfrac{\partial f}{\partial \wst{3}} & \cdots & \dfrac{\partial f}{\partial \wst{m}} \\
 			\dfrac{\partial g_1}{\partial \wmu} & \dfrac{\partial g_1}{\partial \wst{1}} & \dfrac{\partial g_1}{\partial \wst{2}} & \dfrac{\partial g_1}{\partial \wst{3}} & \cdots & \dfrac{\partial g_1}{\partial \wst{m}} \\
 			\dfrac{\partial g_2}{\partial \wmu} & \dfrac{\partial g_2}{\partial \wst{1}} & \dfrac{\partial g_2}{\partial \wst{2}} & \dfrac{\partial g_2}{\partial \wst{3}} & \cdots & \dfrac{\partial g_2}{\partial \wst{m}} \\
@@ -171,7 +171,7 @@
 		\wst{3} \\
 		\hdotsfor{1} \\
 		\wst{m}
-	\end{matrix}\right]_{\mathrm{Old}} - J^{-1}\mathbf{F}
+	\end{matrix}\right]_{\mathrm{Old}} - \mathrm{J}^{-1}\mathbf{F}
 	\end{align*}
 
 	to numerically approximate our MLEs under the null. What should we use as our initial guess for $\left[\begin{matrix}
