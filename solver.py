@@ -195,7 +195,7 @@ def getVars(group, y):
 
     # Initial guess of mu under the null
     muNull = np.mean(y)
-    
+
     # Initial guess of var under the null
     varNull = np.var(yarr, axis=1)
 
@@ -245,14 +245,25 @@ def newtons(m, muNull, varNull, nvec, yarr, ybarvec):
     # Iterate until we get muNull and varNull to required
     # tolerance level or we run out of iterations
     while (tol < diff and iteration < itMax):
+        # Current iteration of Newton's
         muNull += eps[0]
         varNull += eps[1:m+1]
+
+        # Set up vectors for next iteration of Newton's
         F, J = funjac(muNull, varNull, nvec, yarr, ybarvec)
         eps = -np.linalg.solve(J, F)
+
+        # Put data from current iteration of Newton's into param vector
         param[0] = muNull
         param[1:m+1] = np.reshape(varNull, (m, 1))
+
+        # Scaling eps, making it relative
         epsRel = np.reshape(eps, (m+1, 1))/param
+
+        # Root mean square of epsRel
         diff = np.sqrt(np.sum(epsRel**2)/(m+1))
+
+        # Up iteration counter by 1
         iteration += 1
 
     return muNull, varNull
@@ -276,8 +287,10 @@ def main():
 
     # Likelihood ratio
     lam = np.prod(np.power(varUnrest/varNull, nvec/2))
+
     # Test statistic -2ln(lam)
     stat = -2*np.log(lam)
+
     # Associated p-value
     pval = 1-chi2.cdf(stat, m-1)
 
