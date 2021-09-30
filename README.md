@@ -2,3 +2,5 @@
 This repository contains a LaTeX document (including .tex file, .toc file and .pdf file output for it) showing the statistical working for a likelihood-ratio test that should be roughly equivalent to the Welch's ANOVA procedure.
 
 The Python script [solver.py](/solver.py) implements the test. Currently it is set up to use ProjectData.csv, a file I, the author of this repository, have in my local copy of the repository that comes from the experimental project I did in [STA3300 at USQ in Semester 1, 2021](https://www.usq.edu.au/course/specification/2021/STA3300-S1-2021-ONC-TWMBA.html). This script uses Newton's method to derive the maximum likelihood estimators under the null hypothesis and uses an analytical formula derived in the LaTeX document in this repository for the unrestricted maximum likelihood. 
+
+[exOutput.txt](/exOutput.txt) contains the output from solver.py when run on my local copy of ProjectData.csv. The p-value obtained, 2.123e-09, is less than the p-value obtained by Welch's ANOVA (1.814e-06), but higher than the p-value obtained by a Gamma generalized linear model (4.62e-13).

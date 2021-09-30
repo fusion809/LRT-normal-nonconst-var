@@ -1,0 +1,34 @@
+Null mean             = 3.781e+03
+-------------------------------------
+For group             = 1
+Null variance         = 2.954e+06
+Unrestricted mean     = 2.067e+03
+Unrestricted variance = 1.659e+04
+-------------------------------------
+For group             = 2
+Null variance         = 2.349e+06
+Unrestricted mean     = 4.357e+03
+Unrestricted variance = 2.017e+06
+-------------------------------------
+For group             = 3
+Null variance         = 5.293e+06
+Unrestricted mean     = 6.025e+03
+Unrestricted variance = 2.571e+05
+-------------------------------------
+For group             = 4
+Null variance         = 1.679e+06
+Unrestricted mean     = 4.599e+03
+Unrestricted variance = 1.008e+06
+-------------------------------------
+For group             = 5
+Null variance         = 1.033e+06
+Unrestricted mean     = 2.988e+03
+Unrestricted variance = 4.049e+05
+-------------------------------------
+For group             = 6
+Null variance         = 3.680e+05
+Unrestricted mean     = 3.851e+03
+Unrestricted variance = 3.631e+05
+-------------------------------------
+Test statistic        = 49.094
+P-value               = 2.123e-09
